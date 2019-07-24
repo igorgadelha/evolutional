@@ -1,0 +1,12 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.example-container .mat-form-field {
+  width: 100%;
+}
+.mat-dialog-actions {
+  display: inline-block;
+  text-align: right;
+}

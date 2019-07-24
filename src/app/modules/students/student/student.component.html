@@ -1,0 +1,117 @@
+<mat-toolbar color="primary">
+  <mat-toolbar-row class="header">
+      <div flex-container class="container">
+          <h1 class="text-center title">Estudantes</h1>
+      </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+<mat-tab-group mat-align-tabs="center">
+  <mat-tab label="Alunos">
+    <div flex-container class="container mt">
+      <mat-card>
+        <mat-grid-list cols="4" rowHeight="4:1">
+          <mat-grid-tile>
+            <h2>Filtrar</h2>
+          </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field class="example-full-width">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Pesquisar aluno" >
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Degrees</mat-label>
+            <mat-select (selectionChange)="filterDegree($event)">
+              <mat-option *ngFor='let degree of degrees' [value]='degree'>
+                {{degree.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Classrooms</mat-label>
+            <mat-select (selectionChange)="filterClassroom($event)">
+              <mat-option *ngFor='let classroom of classrooms' [value]='classroom'>
+                {{classroom.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      </mat-card>
+    </div>
+    <div class="container mt">
+      <div class="mat-elevation-z8">
+        <table mat-table class="full-width-table" matSort  aria-label="Elements">
+          <!-- Id Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Id</th>
+            <td mat-cell *matCellDef="let row">{{row.id}}</td>
+          </ng-container>
+
+          <!-- RA Column -->
+          <ng-container matColumnDef="ra">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>RA</th>
+            <td mat-cell *matCellDef="let row">{{row.ra}}</td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+            <td mat-cell *matCellDef="let row">{{row.name}}</td>
+          </ng-container>
+
+          <!-- Degree Column -->
+          <ng-container matColumnDef="degreeId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Degree</th>
+            <td mat-cell *matCellDef="let row">{{ filterDegreeColumn(row.degreeId) }}</td>
+          </ng-container>
+
+          <!-- Degree Column -->
+          <ng-container matColumnDef="classId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Class</th>
+            <td mat-cell *matCellDef="let row">{{ filterClasroomColumn(row.classId) }}</td>
+          </ng-container>
+
+          <!-- Degree Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+            <td mat-cell *matCellDef="let row">
+              <button type="button" mat-button name="button" (click)='edit(row)'>
+                <mat-icon>
+                  edit
+                </mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator #paginator
+            [length]="dataSource?.data.length"
+            [pageIndex]="0"
+            [pageSize]="5"
+            [pageSizeOptions]="[1, 5, 25, 50, 100, 250]"
+            (page)="pageChanges($event)"
+            >
+        </mat-paginator>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Dashboard">
+    <div class="container mt">
+      <mat-card>
+        <app-student-charts [chartData]='chartData'></app-student-charts>
+      </mat-card>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+
+  <div class="container mt">
+    <button mat-fab aria-label="Example icon-button with a heart icon" (click)='addStudents()'>
+      +
+    </button>
+  </div>

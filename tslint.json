@@ -88,5 +88,10 @@
   },
   "rulesDirectory": [
     "codelyzer"
-  ]
+  ],
+  "compilerOptions": {
+      "types": [
+        "node"
+      ]
+    }
 }
